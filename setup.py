@@ -8,7 +8,7 @@ with open(Path(this_directory).joinpath('README.rst'), encoding='utf-8') as read
 extras_require = {
     'tensorflow': ['tensorflow~=2.0', 'tensorflow-probability~=0.8'],
     'torch': ['torch~=1.2'],
-    'jax': ['jax~=0.1,>0.1.51', 'jaxlib~=0.1,>0.1.33'],
+    'jax': ['jax~=0.1,>=0.1.63', 'jaxlib~=0.1,>=0.1.44'],
     'xmlio': ['uproot'],
     'minuit': ['iminuit'],
 }
