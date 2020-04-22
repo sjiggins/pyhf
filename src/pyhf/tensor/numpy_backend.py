@@ -1,3 +1,4 @@
+"""NumPy Tensor Library Module."""
 import numpy as np
 import logging
 from scipy.special import gammaln
@@ -45,7 +46,7 @@ class numpy_backend(object):
         Example:
 
             >>> import pyhf
-            >>> pyhf.set_backend(pyhf.tensor.numpy_backend())
+            >>> pyhf.set_backend("numpy")
             >>> a = pyhf.tensorlib.astensor([-2, -1, 0, 1, 2])
             >>> pyhf.tensorlib.clip(a, -1, 1)
             array([-1., -1.,  0.,  1.,  1.])
@@ -67,7 +68,7 @@ class numpy_backend(object):
         Example:
 
             >>> import pyhf
-            >>> pyhf.set_backend(pyhf.tensor.numpy_backend())
+            >>> pyhf.set_backend("numpy")
             >>> a = pyhf.tensorlib.astensor([[1.0], [2.0]])
             >>> pyhf.tensorlib.tile(a, (1, 2))
             array([[1., 1.],
@@ -89,7 +90,7 @@ class numpy_backend(object):
         Example:
 
             >>> import pyhf
-            >>> pyhf.set_backend(pyhf.tensor.numpy_backend())
+            >>> pyhf.set_backend("numpy")
             >>> tensorlib = pyhf.tensorlib
             >>> a = tensorlib.astensor([4])
             >>> b = tensorlib.astensor([5])
@@ -208,7 +209,7 @@ class numpy_backend(object):
         Example:
 
             >>> import pyhf
-            >>> pyhf.set_backend(pyhf.tensor.numpy_backend())
+            >>> pyhf.set_backend("numpy")
             >>> pyhf.tensorlib.simple_broadcast(
             ...   pyhf.tensorlib.astensor([1]),
             ...   pyhf.tensorlib.astensor([2, 3, 4]),
@@ -260,7 +261,7 @@ class numpy_backend(object):
         Example:
 
             >>> import pyhf
-            >>> pyhf.set_backend(pyhf.tensor.numpy_backend())
+            >>> pyhf.set_backend("numpy")
             >>> pyhf.tensorlib.poisson(5., 6.)
             0.16062314104797995
             >>> values = pyhf.tensorlib.astensor([5., 9.])
@@ -303,7 +304,7 @@ class numpy_backend(object):
         Example:
 
             >>> import pyhf
-            >>> pyhf.set_backend(pyhf.tensor.numpy_backend())
+            >>> pyhf.set_backend("numpy")
             >>> pyhf.tensorlib.normal(0.5, 0., 1.)
             0.3520653267642995
             >>> values = pyhf.tensorlib.astensor([0.5, 2.0])
@@ -329,7 +330,7 @@ class numpy_backend(object):
         Example:
 
             >>> import pyhf
-            >>> pyhf.set_backend(pyhf.tensor.numpy_backend())
+            >>> pyhf.set_backend("numpy")
             >>> pyhf.tensorlib.normal_cdf(0.8)
             0.7881446014166034
             >>> values = pyhf.tensorlib.astensor([0.8, 2.0])
@@ -352,7 +353,7 @@ class numpy_backend(object):
 
         Example:
             >>> import pyhf
-            >>> pyhf.set_backend(pyhf.tensor.numpy_backend())
+            >>> pyhf.set_backend("numpy")
             >>> rates = pyhf.tensorlib.astensor([5, 8])
             >>> values = pyhf.tensorlib.astensor([4, 9])
             >>> poissons = pyhf.tensorlib.poisson_dist(rates)
@@ -373,7 +374,7 @@ class numpy_backend(object):
 
         Example:
             >>> import pyhf
-            >>> pyhf.set_backend(pyhf.tensor.numpy_backend())
+            >>> pyhf.set_backend("numpy")
             >>> means = pyhf.tensorlib.astensor([5, 8])
             >>> stds = pyhf.tensorlib.astensor([1, 0.5])
             >>> values = pyhf.tensorlib.astensor([4, 9])

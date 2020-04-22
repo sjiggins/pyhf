@@ -1,5 +1,5 @@
-API
-===
+Python API
+==========
 
 Top-Level
 ---------
@@ -34,16 +34,16 @@ Probability Distribution Functions (PDFs)
 Making Models from PDFs
 -----------------------
 
-.. currentmodule:: pyhf.pdf
+.. currentmodule:: pyhf
 
 .. autosummary::
    :toctree: _generated/
    :nosignatures:
    :template: modifierclass.rst
 
-   Workspace
-   Model
-   _ModelConfig
+   ~pdf.Model
+   ~pdf._ModelConfig
+   ~workspace.Workspace
 
 Backends
 --------
@@ -60,6 +60,7 @@ The computational backends that :code:`pyhf` provides interfacing for the vector
    numpy_backend.numpy_backend
    pytorch_backend.pytorch_backend
    tensorflow_backend.tensorflow_backend
+   jax_backend.jax_backend
 
 Optimizers
 ----------
@@ -74,6 +75,7 @@ Optimizers
    opt_pytorch.pytorch_optimizer
    opt_scipy.scipy_optimizer
    opt_tflow.tflow_optimizer
+   opt_jax.jax_optimizer
    opt_minuit.minuit_optimizer
 
 Modifiers
@@ -109,6 +111,23 @@ Interpolators
    code4
    code4p
 
+Inference
+---------
+
+.. currentmodule:: pyhf.infer
+
+.. autosummary::
+   :toctree: _generated/
+
+   hypotest
+   test_statistics.qmu
+   mle.twice_nll
+   mle.fit
+   mle.fixed_poi_fit
+   calculators.generate_asimov_data
+   calculators.AsymptoticTestStatDistribution
+   calculators.AsymptoticCalculator
+
 Exceptions
 ----------
 
@@ -121,8 +140,17 @@ Various exceptions, apart from standard python exceptions, that are raised from 
    :nosignatures:
    :template: modifierclass.rst
 
-   InvalidInterpCode
+   InvalidMeasurement
+   InvalidNameReuse
+   InvalidSpecification
+   InvalidWorkspaceOperation
+   InvalidModel
    InvalidModifier
+   InvalidInterpCode
+   ImportBackendError
+   InvalidOptimizer
+   InvalidPdfParameters
+   InvalidPdfData
 
 Utilities
 ---------
@@ -132,9 +160,6 @@ Utilities
 .. autosummary::
    :toctree: _generated/
 
-   generate_asimov_data
-   loglambdav
-   pvals_from_teststat
-   pvals_from_teststat_expected
-   qmu
-   hypotest
+   load_schema
+   validate
+   options_from_eqdelimstring

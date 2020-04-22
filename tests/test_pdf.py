@@ -171,7 +171,6 @@ def test_pdf_integration_staterror(backend):
         ]
     }
     pdf = pyhf.Model(spec)
-    par = pdf.config.par_slice('stat_firstchannel')
     par_set = pdf.config.param_set('stat_firstchannel')
     tensorlib, _ = backend
     uncerts = tensorlib.astensor([[12.0, 12.0], [5.0, 5.0]])
@@ -181,6 +180,56 @@ def test_pdf_integration_staterror(backend):
     assert pytest.approx(tensorlib.tolist(par_set.sigmas)) == tensorlib.tolist(
         tensorlib.divide(quad, totals)
     )
+
+
+def test_pdf_integration_shapesys_zeros(backend):
+    spec = {
+        "channels": [
+            {
+                "name": "channel1",
+                "samples": [
+                    {
+                        "data": [20.0, 10.0, 5.0, 3.0, 2.0, 1.0],
+                        "modifiers": [
+                            {"data": None, "name": "mu", "type": "normfactor"}
+                        ],
+                        "name": "signal",
+                    },
+                    {
+                        "data": [100.0, 90, 0.0, 70, 0.1, 50],
+                        "modifiers": [
+                            {
+                                "data": [10, 9, 1, 0.0, 0.1, 5],
+                                "name": "syst",
+                                "type": "shapesys",
+                            },
+                            {
+                                "data": [0, 0, 0, 0, 0, 0],
+                                "name": "syst_lowstats",
+                                "type": "shapesys",
+                            },
+                        ],
+                        "name": "background1",
+                    },
+                ],
+            }
+        ]
+    }
+    pdf = pyhf.Model(spec)
+    par_set_syst = pdf.config.param_set('syst')
+    par_set_syst_lowstats = pdf.config.param_set('syst_lowstats')
+
+    assert par_set_syst.n_parameters == 4
+    assert par_set_syst_lowstats.n_parameters == 0
+    tensorlib, _ = backend
+    nominal_sq = tensorlib.power(tensorlib.astensor([100.0, 90, 0.0, 70, 0.1, 50]), 2)
+    uncerts_sq = tensorlib.power(tensorlib.astensor([10, 9, 1, 0.0, 0.1, 5]), 2)
+    factors = tensorlib.divide(nominal_sq, uncerts_sq)
+    indices = tensorlib.astensor([0, 1, 4, 5], dtype='int')
+    assert pytest.approx(tensorlib.tolist(par_set_syst.factors)) == tensorlib.tolist(
+        tensorlib.gather(factors, indices)
+    )
+    assert getattr(par_set_syst_lowstats, 'factors', None) is None
 
 
 @pytest.mark.only_numpy
@@ -600,4 +649,4 @@ def test_sample_wrong_bins():
         ]
     }
     with pytest.raises(pyhf.exceptions.InvalidModel):
-        pdf = pyhf.Model(spec)
+        pyhf.Model(spec)

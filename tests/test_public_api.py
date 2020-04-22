@@ -14,6 +14,50 @@ def model_setup(backend):
     return model, data, init_pars
 
 
+@pytest.mark.parametrize("backend_name", ["numpy", "tensorflow", "pytorch", "PyTorch"])
+def test_set_backend_by_string(backend_name):
+    pyhf.set_backend(backend_name)
+    assert isinstance(
+        pyhf.tensorlib,
+        getattr(pyhf.tensor, "{0:s}_backend".format(backend_name.lower())),
+    )
+
+
+@pytest.mark.parametrize("backend_name", [b"numpy", b"tensorflow", b"pytorch"])
+def test_set_backend_by_bytestring(backend_name):
+    pyhf.set_backend(backend_name)
+    assert isinstance(
+        pyhf.tensorlib,
+        getattr(pyhf.tensor, "{0:s}_backend".format(backend_name.decode("utf-8"))),
+    )
+
+
+@pytest.mark.parametrize("backend_name", ["fail", b"fail"])
+def test_supported_backends(backend_name):
+    with pytest.raises(pyhf.exceptions.InvalidBackend):
+        pyhf.set_backend(backend_name)
+
+
+def test_custom_backend_name_supported():
+    class custom_backend(object):
+        def __init__(self, **kwargs):
+            self.name = "pytorch"
+
+    with pytest.raises(AttributeError):
+        pyhf.set_backend(custom_backend())
+
+
+def test_custom_backend_name_notsupported():
+    class custom_backend(object):
+        def __init__(self, **kwargs):
+            self.name = "notsupported"
+
+    backend = custom_backend()
+    assert pyhf.tensorlib.name != backend.name
+    pyhf.set_backend(backend)
+    assert pyhf.tensorlib.name == backend.name
+
+
 def test_logpprob(backend, model_setup):
     model, data, init_pars = model_setup
     model.logpdf(init_pars, data)
@@ -22,14 +66,13 @@ def test_logpprob(backend, model_setup):
 def test_hypotest(backend, model_setup):
     model, data, init_pars = model_setup
     mu = 1.0
-    pyhf.utils.hypotest(
+    pyhf.infer.hypotest(
         mu,
         data,
         model,
         init_pars,
         model.config.suggested_bounds(),
         return_expected_set=True,
-        return_test_statistics=True,
     )
 
 

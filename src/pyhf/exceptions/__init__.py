@@ -34,6 +34,10 @@ class InvalidSpecification(Exception):
         super(InvalidSpecification, self).__init__(message)
 
 
+class InvalidWorkspaceOperation(Exception):
+    """InvalidWorkspaceOperation is raised when an operation on a workspace fails."""
+
+
 class InvalidModel(Exception):
     """
     InvalidModel is raised when a given model does not have the right configuration, even though it validates correctly against the schema.
@@ -64,9 +68,15 @@ class ImportBackendError(Exception):
     """
 
 
+class InvalidBackend(Exception):
+    """
+    InvalidBackend is raised when trying to set a backend that does not exist.
+    """
+
+
 class InvalidOptimizer(Exception):
     """
-    InvalidOptimizer is raised when trying to set using an optimizer that does not exist.
+    InvalidOptimizer is raised when trying to set an optimizer that does not exist.
     """
 
 
